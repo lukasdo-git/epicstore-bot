@@ -3,6 +3,7 @@ import json
 import discord
 import dictdiffer
 from discord.ext import tasks, commands
+from datetime import datetime
 
 def onChange():
     f = open("free_games.json", "r")
@@ -17,9 +18,13 @@ def onChange():
             json_obj = json.dumps(free_games_new, indent=4)
             f.write(json_obj)
         print("\nFound new games! Updating free_games.json")
+        #debugging
+        debug = ''
         for diff in dictdiffer.diff(free_games_old, free_games_new):
-            print(diff)
-        print("\n")
+            debug += diff + "\n"
+        with open(str(datetime.now()), "w") as f:
+            f.write(debug)
+        print(debug + "\n")
         return True
     else:
         print("No new games found :(")
