@@ -56,7 +56,6 @@ def createMessage(*gamelist):
 
 if __name__ == "__main__":
     config = loadConfig()
-    client = discord.Client(intents=discord.Intents.all())
     client = commands.Bot(command_prefix="e!", intents=discord.Intents.all())
     bot_token = config[0]["BOT_TOKEN"]
     subscribed_channels = dict(loadChannels())
@@ -74,7 +73,7 @@ if __name__ == "__main__":
 
     @client.event
     async def on_ready():
-        await client.change_presence(status=discord.Status.online, activity=discord.Game(name="!help"))
+        await client.change_presence(status=discord.Status.online, activity=discord.Game(name="e!helpme"))
         print(f'We have logged in as {client.user}')
         await myLoop.start()
 
