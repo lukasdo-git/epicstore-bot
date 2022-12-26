@@ -78,8 +78,8 @@ if __name__ == "__main__":
                 color=0x67e6ca
             )
             embed.add_field(name="My purpose", value="I'm a simple bot, thats supposed to tell you, when new games become free-to-take on Epic Games Store", inline=False)
-            embed.add_field(name="Set a channel!", value="If you want to change the channel which recieves automatic updates, please type !setch <channelID>", inline=True)
-            embed.add_field(name="Channel ID", value="To obtain a channel's ID right click on it, and select \"Copy ID\"", inline=True)
+            embed.add_field(name="Set a channel!", value="If you want to change the channel which recieves automatic updates, please type e!setch <channelID>", inline=True)
+            embed.add_field(name="Channel ID", value="To obtain a channel's ID you need to enable Developer View in Discord settings. Then right click on a channel, and select \"Copy ID\"", inline=True)
             embed.add_field(name="Default", value="If no channel ID is set, then the system channel set in server settings will be used!", inline=False)
             supported_commands = '''e!helpme - shows this message
             e!list - shows current free-to-take games
@@ -101,16 +101,17 @@ if __name__ == "__main__":
     async def helpme(ctx):
         embed = discord.Embed(
             title="Welcome!",
-            description=f"Thank you for letting me be a part of {ctx.guild.name}!",
+            description=f"Thank you for letting me be a part of {guild.name}!",
             color=0x67e6ca
         )
         embed.add_field(name="My purpose",
                         value="I'm a simple bot, thats supposed to tell you, when new games become free-to-take on Epic Games Store",
                         inline=False)
         embed.add_field(name="Set a channel!",
-                        value="If you want to change the channel which recieves automatic updates, please type !setch <channelID>",
+                        value="If you want to change the channel which recieves automatic updates, please type e!setch <channelID>",
                         inline=True)
-        embed.add_field(name="Channel ID", value="To obtain a channel's ID right click on it, and select \"Copy ID\"",
+        embed.add_field(name="Channel ID",
+                        value="To obtain a channel's ID you need to enable Developer View in Discord settings. Then right click on a channel, and select \"Copy ID\"",
                         inline=True)
         embed.add_field(name="Default",
                         value="If no channel ID is set, then the system channel set in server settings will be used!",
