@@ -82,7 +82,7 @@ if __name__ == "__main__":
             embed.add_field(name="Channel ID", value="To obtain a channel's ID you need to enable Developer View in Discord settings. Then right click on a channel, and select \"Copy ID\"", inline=True)
             embed.add_field(name="Default", value="If no channel ID is set, then the system channel set in server settings will be used!", inline=False)
             supported_commands = '''e!helpme - shows this message
-            e!list - shows current free-to-take games
+            e!list - dm's current free-to-take games to you
             e!setch <channelId> - explained above'''
             embed.add_field(name="Supported commands", value=supported_commands)
             await guild.system_channel.send(embed=embed)
@@ -95,7 +95,7 @@ if __name__ == "__main__":
     async def list(ctx):
         gamelist = loadGamesList("free_games.json")
         message = createMessage(gamelist)
-        await ctx.send(message)
+        await ctx.message.author.send(message)
 
     @client.command()
     async def helpme(ctx):
@@ -117,7 +117,7 @@ if __name__ == "__main__":
                         value="If no channel ID is set, then the system channel set in server settings will be used!",
                         inline=False)
         supported_commands = '''e!helpme - shows this message
-                    e!list - shows current free-to-take games
+                    e!list - dm's current free-to-take games to you
                     e!setch <channelId> - explained above'''
         embed.add_field(name="Supported commands", value=supported_commands)
         await ctx.send(embed=embed)
