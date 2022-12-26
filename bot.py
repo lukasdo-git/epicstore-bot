@@ -1,6 +1,7 @@
 from epicstore_api import EpicGamesStoreAPI
 import json
 import discord
+import dictdiffer
 from discord.ext import tasks, commands
 
 def onChange():
@@ -15,7 +16,10 @@ def onChange():
         with open("free_games.json", "w") as f:
             json_obj = json.dumps(free_games_new, indent=4)
             f.write(json_obj)
-        print("Found new games! Updating free_games.json")
+        print("\nFound new games! Updating free_games.json")
+        for diff in dictdiffer.diff(free_games_old, free_games_new):
+            print(diff)
+        print("\n")
         return True
     else:
         print("No new games found :(")
@@ -47,7 +51,7 @@ def createMessage(*gamelist):
 
 if __name__ == "__main__":
     config = loadConfig()
-    #client = discord.Client(intents=discord.Intents.all())
+    client = discord.Client(intents=discord.Intents.all())
     client = commands.Bot(command_prefix="e!", intents=discord.Intents.all())
     bot_token = config[0]["BOT_TOKEN"]
     subscribed_channels = dict(loadChannels())
