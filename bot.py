@@ -84,6 +84,7 @@ if __name__ == "__main__":
             embed.add_field(name="Default", value="If no channel ID is set, then the system channel set in server settings will be used!", inline=False)
             supported_commands = '''e!helpme - shows this message
             e!list - sends current free-to-take games [Administrator]
+            e!list me - dm's the current list to you
             e!setch <channelId> - explained above [Administrator]'''
             embed.add_field(name="Supported commands", value=supported_commands)
             await guild.system_channel.send(embed=embed)
@@ -127,6 +128,7 @@ if __name__ == "__main__":
                         inline=False)
         supported_commands = '''e!helpme - shows this message
                     e!list - sends current free-to-take games [Administrator]
+                    e!list me - dm's the current list to you
                     e!setch <channelId> - explained above [Administrator]'''
         embed.add_field(name="Supported commands", value=supported_commands)
         await ctx.send(embed=embed)
