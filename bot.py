@@ -18,13 +18,6 @@ def onChange():
             json_obj = json.dumps(free_games_new, indent=4)
             f.write(json_obj)
         print("\nFound new games! Updating free_games.json")
-        #debugging
-        debug = ''
-        for diff in dictdiffer.diff(free_games_old, free_games_new):
-            debug += diff + "\n"
-        with open(str(datetime.now()), "w") as f:
-            f.write(debug)
-        print(debug + "\n")
         return True
     else:
         print("No new games found :(")
@@ -90,8 +83,8 @@ if __name__ == "__main__":
             embed.add_field(name="Channel ID", value="To obtain a channel's ID you need to enable Developer View in Discord settings. Then right click on a channel, and select \"Copy ID\"", inline=True)
             embed.add_field(name="Default", value="If no channel ID is set, then the system channel set in server settings will be used!", inline=False)
             supported_commands = '''e!helpme - shows this message
-            e!list - dm's current free-to-take games to you
-            e!setch <channelId> - explained above'''
+            e!list - sends current free-to-take games [Administrator]
+            e!setch <channelId> - explained above [Administrator]'''
             embed.add_field(name="Supported commands", value=supported_commands)
             await guild.system_channel.send(embed=embed)
             subscribed_channels.update({str(guild.id): int(guild.system_channel.id)})
@@ -99,8 +92,16 @@ if __name__ == "__main__":
                 jsona = json.dumps(subscribed_channels, indent=4)
                 f.write(jsona)
 
-    @client.command()
+    @client.group()
     async def list(ctx):
+        if ctx.invoked_subcommand is None:
+            if ctx.message.author.guild_permissions.administrator or ctx.message.author.id == client.owner_id:
+                gamelist = loadGamesList("free_games.json")
+                message = createMessage(gamelist)
+                await ctx.send(message)
+
+    @list.command()
+    async def me(ctx):
         gamelist = loadGamesList("free_games.json")
         message = createMessage(gamelist)
         await ctx.message.author.send(message)
@@ -125,8 +126,8 @@ if __name__ == "__main__":
                         value="If no channel ID is set, then the system channel set in server settings will be used!",
                         inline=False)
         supported_commands = '''e!helpme - shows this message
-                    e!list - dm's current free-to-take games to you
-                    e!setch <channelId> - explained above'''
+                    e!list - sends current free-to-take games [Administrator]
+                    e!setch <channelId> - explained above [Administrator]'''
         embed.add_field(name="Supported commands", value=supported_commands)
         await ctx.send(embed=embed)
 
