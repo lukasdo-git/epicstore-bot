@@ -14,9 +14,13 @@ def onChange():
     free_games_new = api.get_free_games()['data']['Catalog']['searchStore']['elements']
 
     if free_games_new != free_games_old:
+
         with open("free_games.json", "w") as f:
             json_obj = json.dumps(free_games_new, indent=4)
             f.write(json_obj)
+
+        #Debugging - todo
+
         print("\nFound new games! Updating free_games.json")
         return True
     else:
@@ -43,8 +47,12 @@ def loadGamesList(file):
 
 def createMessage(*gamelist):
     message = [">>> Current free-to-take games on Epic Games Store: \n\n"]
-    for game in gamelist:
-        message += game[0]['title'] + f" | https://store.epicgames.com/en/p/{game[0]['productSlug']}" +"\n"
+    game_no = 0
+    while game_no <= len(gamelist):
+        for game in gamelist:
+            if game[game_no]['title'] != "Mystery Game":
+                message += game[game_no]['title'] + f" | https://store.epicgames.com/en/p/{game[game_no]['productSlug']}" + "\n"
+        game_no += 1
     return ''.join(message)
 
 if __name__ == "__main__":
