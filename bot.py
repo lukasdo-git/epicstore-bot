@@ -2,6 +2,7 @@ from epicstore_api import EpicGamesStoreAPI
 import json
 import discord
 import dictdiffer
+from operator import length_hint
 from discord.ext import tasks, commands
 from datetime import datetime
 
@@ -19,7 +20,7 @@ def onChange():
             json_obj = json.dumps(free_games_new, indent=4)
             f.write(json_obj)
 
-        #Debugging - todo
+        #Debugging - todo!
 
         print("\nFound new games! Updating free_games.json")
         return True
@@ -48,12 +49,16 @@ def loadGamesList(file):
 def createMessage(*gamelist):
     message = [">>> Current free-to-take games on Epic Games Store: \n\n"]
     game_no = 0
-    while game_no <= len(gamelist):
-        for game in gamelist:
-            if game[game_no]['title'] != "Mystery Game":
-                message += game[game_no]['title'] + f" | https://store.epicgames.com/en/p/{game[game_no]['productSlug']}" + "\n"
-        game_no += 1
-    return ''.join(message)
+    try:
+        while game_no <= len(gamelist)+10:
+            for game in gamelist:
+                if game[game_no]['title'] != "Mystery Game":
+                    if game and game[game_no]['price']['totalPrice']['discountPrice'] == 0:
+                        message += game[game_no]['title'] + f" | https://store.epicgames.com/en/p/{game[game_no]['productSlug']}" + "\n"
+                game_no += 1
+        return ''.join(message)
+    except:
+        return ''.join(message)
 
 if __name__ == "__main__":
     config = loadConfig()
@@ -102,14 +107,14 @@ if __name__ == "__main__":
                 f.write(jsona)
 
     @client.group()
-    async def list(ctx):
+    async def lista(ctx):
         if ctx.invoked_subcommand is None:
             if ctx.message.author.guild_permissions.administrator or ctx.message.author.id == client.owner_id:
                 gamelist = loadGamesList("free_games.json")
                 message = createMessage(gamelist)
                 await ctx.send(message)
 
-    @list.command()
+    @lista.command()
     async def me(ctx):
         gamelist = loadGamesList("free_games.json")
         message = createMessage(gamelist)
@@ -119,7 +124,7 @@ if __name__ == "__main__":
     async def helpme(ctx):
         embed = discord.Embed(
             title="Welcome!",
-            description=f"Thank you for letting me be a part of {guild.name}!",
+            description=f"Thank you for letting me be a part of {ctx.guild.name}!",
             color=0x67e6ca
         )
         embed.add_field(name="My purpose",
