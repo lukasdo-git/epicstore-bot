@@ -53,7 +53,7 @@ def createMessage(*gamelist):
         while game_no <= len(gamelist)+10:
             for game in gamelist:
                 if game[game_no]['title'] != "Mystery Game":
-                    if game and game[game_no]['price']['totalPrice']['discountPrice'] == 0:
+                    if game and game[game_no]['price']['totalPrice']['discountPrice'] == 0 and game[game_no]['promotions'] is not None:
                         message += game[game_no]['title'] + f" | https://store.epicgames.com/en/p/{game[game_no]['productSlug']}" + "\n"
                 game_no += 1
         return ''.join(message)
@@ -178,4 +178,4 @@ if __name__ == "__main__":
             await ctx.send(embed=embed)
 
 
-    client.run(bot_token)
+    client.run(bot_token, reconnect=True)
