@@ -1,10 +1,7 @@
 from epicstore_api import EpicGamesStoreAPI
 import json
 import discord
-import dictdiffer
-from operator import length_hint
 from discord.ext import tasks, commands
-from datetime import datetime
 
 def onChange():
     f = open("free_games.json", "r")
