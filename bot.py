@@ -54,8 +54,12 @@ def createMessage(*gamelist):
             for game in gamelist:
                 if game[game_no]['title'] != "Mystery Game":
                     if game and game[game_no]['price']['totalPrice']['discountPrice'] == 0 and game[game_no]['promotions'] is not None:
-                        message += game[game_no]['title'] + f" | https://store.epicgames.com/en/p/{game[game_no]['productSlug']}" + "\n"
+                        if game[game_no]['productSlug'] is not None:
+                            message += game[game_no]['title'] + f" | https://store.epicgames.com/en/p/{game[game_no]['productSlug']}" + "\n"
+                        else:
+                            message += game[game_no]['title'] + " | Unfortunately the API link is broken. Please go to the EGStore to claim the game. \n"
                 game_no += 1
+            print(''.join(message))
         return ''.join(message)
     except:
         return ''.join(message)
